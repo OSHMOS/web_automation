@@ -1,7 +1,8 @@
 '''
-라이브러리
-유용한 기능을 제공함
-os, datetime, shutil 등이 있음
+파이썬으로 서버에게 요청 보내고 응답 확인하기
 '''
+import requests
 
-import os
+response = requests.get('https://google.com')
+print(response)
+print(response.text)

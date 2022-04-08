@@ -1,22 +1,22 @@
-#first-heading {
+/* or 연산 */
+h2, p {
   color: royalblue;
   text-align: center;
 }
-h2 {
+
+/* and 연산 */
+b.codeit {
+  color: purple;
+}
+
+/* 중첩 태그 */
+li * {
   color: red;
-  text-align: center;
 }
-p {
-  color:  white;
-  background: lightblue;
-}
-.beginner {
+
+/* 직속 자식인 태그만 선택 */
+li > * {
   color: orange;
 }
-li {
-  color: gray;
-}
-[href="https://www.codeit.kr/"] {
-  text-decoration: none;
-  color: green;
-}
+
+/* 모든 태그 => '*' */

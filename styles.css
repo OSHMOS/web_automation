@@ -1,11 +1,22 @@
-h2 {
+#first-heading {
   color: royalblue;
+  text-align: center;
+}
+h2 {
+  color: red;
   text-align: center;
 }
 p {
   color:  white;
   background: lightblue;
 }
+.beginner {
+  color: orange;
+}
 li {
   color: gray;
+}
+[href="https://www.codeit.kr/"] {
+  text-decoration: none;
+  color: green;
 }

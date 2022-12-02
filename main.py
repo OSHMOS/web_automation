@@ -4,15 +4,21 @@
 import requests
 from bs4 import BeautifulSoup
 
-url = f'https://workey.codeit.kr/ratings/index'
+url = f'https://workey.codeit.kr/music'
 response = requests.get(url)
-rating_page = response.text
+music_page = response.text
 
-soup = BeautifulSoup(rating_page, 'html.parser')
+soup = BeautifulSoup(music_page, 'html.parser')
 
-tr_tag = soup.select('tr')[1]
-# td_tags = tr_tag.select('td')
-td_tags = tr_tag.select('*')
-print(td_tags)
-for tag in td_tags:
-    print(tag.get_text())
+popular_artists = []
+
+# for tag in soup.select('ul.popular__order li'):
+# popular_artists.append(tag.get_text().strip())
+
+for tag in soup.select('ul.popular__order li'):
+    # print(list(tag.strings))
+    # print(list(tag.stripped_strings))
+    # print(list(tag.stripped_strings)[1])
+    popular_artists.append(list(tag.stripped_strings)[1])
+
+print(popular_artists)

@@ -3,11 +3,14 @@
 '''
 import requests
 from bs4 import BeautifulSoup
-from openpyxl import Workbook
+import csv
 
-wb = Workbook(write_only=True)  # 엄청 많은 데이터를 다룰 때는 write_only 필수
-ws = wb.create_sheet('TV Ratings')  # 워크시트 생성
-ws.append(['순위', '채널', '프로그램', '시청률'])  # 행 추가
+# csv 파일 생성
+csv_file = open('시청률_2010년1월1주차.csv', 'w')
+csv_writer = csv.writer(csv_file)
+
+# 행 추가
+csv_writer.writerow(['순위', '채널', '프로그램', '시청률'])
 
 url = 'https://workey.codeit.kr/ratings/index'
 response = requests.get(url)
@@ -22,6 +25,8 @@ for tr_tag in soup.select('tr')[1:]:
         td_tags[2].get_text(),  # 프로그램
         td_tags[3].get_text(),  # 시청률
     ]
-    ws.append(row)
+    # 데이터 행 추가
+    csv_writer.writerow(row)
 
-wb.save('시청률_2010년1월1주차.xlsx')  # 워크북 저장
+# csv 파일 닫기
+csv_file.close()

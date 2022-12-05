@@ -3,30 +3,29 @@
 '''
 import requests
 from bs4 import BeautifulSoup
-import csv
+from openpyxl import Workbook
 
-# csv 파일 생성
-csv_file = open('시청률_2010년1월1주차.csv', 'w')
-csv_writer = csv.writer(csv_file)
+wb = Workbook(write_only=True)
 
-# 행 추가
-csv_writer.writerow(['순위', '채널', '프로그램', '시청률'])
+for year in range(2010, 2019):
+    ws = wb.create_sheet(f'{year}년')
+    ws.append(['기간', '순위', '채널', '프로그램', '시청률'])
+    for month in range(1, 13):
+        for weekIndex in range(0, 5):
+            url = 'https://workey.codeit.kr/ratings/index?year=2011&month=1&weekIndex=0'
+            response = requests.get(url)
+            rating_page = response.text
+            soup = BeautifulSoup(rating_page, 'html.parser')
 
-url = 'https://workey.codeit.kr/ratings/index'
-response = requests.get(url)
-rating_page = response.text
-
-soup = BeautifulSoup(rating_page, 'html.parser')
-for tr_tag in soup.select('tr')[1:]:
-    td_tags = tr_tag.select('td')
-    row = [
-        td_tags[0].get_text(),  # 순위
-        td_tags[1].get_text(),  # 채널
-        td_tags[2].get_text(),  # 프로그램
-        td_tags[3].get_text(),  # 시청률
-    ]
-    # 데이터 행 추가
-    csv_writer.writerow(row)
-
-# csv 파일 닫기
-csv_file.close()
+            for tr_tag in soup.select('tr')[1:]:  # [1:] 덕분에 빈 테이블 걸러짐. 이런 식으로
+                td_tags = tr_tag.select('td')
+                period = f'{year}년 {month}월 {weekIndex + 1}주차'
+                row = [
+                    period,
+                    td_tags[0].get_text(),  # 순위
+                    td_tags[1].get_text(),  # 채널
+                    td_tags[2].get_text(),  # 프로그램
+                    td_tags[3].get_text(),  # 시청률
+                ]
+                ws.append(row)
+wb.save('시청률.xlsx')

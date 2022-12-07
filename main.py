@@ -5,6 +5,7 @@
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -27,15 +28,19 @@ wait = WebDriverWait(driver, 3)
 # 아이디와 비밀번호 입력
 id_box = wait.until(EC.visibility_of_element_located(
     (By.CSS_SELECTOR, '.login-container__login-input')))
-id_box.send_keys('codeit')
 pw_box = wait.until(EC.visibility_of_element_located(
     (By.CSS_SELECTOR, '.login-container__password-input')))
-pw_box.send_keys('datascience')
 
 # 로그인 시도
 login_button = wait.until(EC.element_to_be_clickable(
     (By.CSS_SELECTOR, '.login-container__login-button')))
-login_button.click()
+
+(ActionChains(driver)
+    .send_keys_to_element(id_box, 'codeit')
+    # senc_keys()로만 하면, 같은 공간에 두 정보를 입력할 수도 있다.
+    .send_keys_to_element(pw_box, 'datascience')
+    .click(login_button)
+    .perform())  # 코드 한 줄로 인식한다.
 
 # 로그아웃 시도
 # driver.find_element_by_css_selector('.top-nav__login-link').click()

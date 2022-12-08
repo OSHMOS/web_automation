@@ -17,13 +17,13 @@ driver = webdriver.Chrome()
 driver.get('https://workey.codeit.kr/costagram/index')
 time.sleep(3)  # 이 코드는 explicitly wait와 같이 써도 무방하다.
 
-# 로그인 클릭
-login_link = WebDriverWait(driver, 3).until(
-    EC.element_to_be_clickable((By.CSS_SELECTOR, '.top-nav__login-link')))
-login_link.click()
-
 # 공통된 WebDriverWait
 wait = WebDriverWait(driver, 3)
+
+# 로그인 클릭
+login_link = wait.until(
+    EC.element_to_be_clickable((By.CSS_SELECTOR, '.top-nav__login-link')))
+login_link.click()
 
 # 아이디와 비밀번호 입력
 id_box = wait.until(EC.visibility_of_element_located(

@@ -16,12 +16,9 @@ driver = webdriver.Chrome()
 driver.get('https://workey.codeit.kr/music')
 time.sleep(3)
 
-popular_artists = []
+driver.execute_script('window.scrollTo(0, 200);')
 
-for artist in driver.find_elements_by_css_selector('ul.popular__order li'):
-    popular_artists.append(artist.text)
-
-print(popular_artists)
-
+scroll_height = driver.execute_script('return document.body.scrollHeight')
+print(scroll_height)
 # scrap 작업 후에 브라우저 닫기 가능
-driver.quit()
+# driver.quit()

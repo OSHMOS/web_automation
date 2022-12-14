@@ -4,10 +4,11 @@
 # Selenium 임포트
 import time
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from openpyxl import Workbook
+
+wb = Workbook(write_only=True)
+ws = wb.create_sheet('플레이 리스트')
+ws.append(['제목', '해시태그', '좋아요 수', '곡 수'])
 
 # 크롬 드라이버 생성
 driver = webdriver.Chrome()
@@ -32,5 +33,17 @@ while True:
         break
     last_height = new_height
 
+playlists = driver.find_elements_by_css_selector('div.playlist__meta')
+
+for playlist in playlists:
+    title = playlist.find_element_by_css_selector('h3.title').text
+    hashtags = playlist.find_element_by_css_selector('p.tags').text
+    like_count = playlist.find_element_by_css_selector(
+        'span.data__like-count').text
+    music_count = playlist.find_element_by_css_selector(
+        'span.data__music-count').text
+    ws.append([title, hashtags, like_count, music_count])
+
 # scrap 작업 후에 브라우저 닫기 가능
-# driver.quit()
+driver.quit()
+wb.save('플레이리스트_정보.xlsx')
